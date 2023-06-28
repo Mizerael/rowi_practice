@@ -1,3 +1,4 @@
+using rowi_practice.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace rowi_practice.Controllers;
@@ -15,7 +16,7 @@ public class WeatherForecastController : ControllerBase
 
     public WeatherForecastController(ILogger<WeatherForecastController> logger)
     {
-        _logger = logger;
+       _logger = logger;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -30,3 +31,4 @@ public class WeatherForecastController : ControllerBase
         .ToArray();
     }
 }
+

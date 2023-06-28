@@ -10,3 +10,15 @@ public class WeatherForecast
 
     public string? Summary { get; set; }
 }
+
+public class UserRole
+{
+    public int Id { get; }
+    public string Name {get; set; }
+
+}
+
+public class AdministaratorRole : UserRole
+{
+    private string key;
+}
