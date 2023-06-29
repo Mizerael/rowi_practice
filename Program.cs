@@ -1,11 +1,11 @@
-using rowi_practice.Data;
+using rowi_practice.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ExistingProblemContext>(option =>
-        option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+        option.UseInMemoryDatabase("TasksList"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -21,7 +21,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
