@@ -8,5 +8,5 @@ public class ExistingProblem
     public string Tests { get; set; }
     public DateTime DataCreated { get; set; }
     public DateTime EndPointDate { get; set; }
-    protected bool decided { get; set; }
+    protected bool decided { get; set; } = false;
 }

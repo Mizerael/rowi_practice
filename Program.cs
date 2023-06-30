@@ -1,4 +1,4 @@
-using rowi_practice.Models;
+using rowi_practice.Context;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
