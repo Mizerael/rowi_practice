@@ -4,8 +4,7 @@ create table ExistingProblem (
     Contains        text        not null,
     Tests           text        not null,
     DataCreated     timestamp   not null,
-    EndPointDate    timestamp   not null,
-    decided         bit         not null
+    EndPointDate    timestamp   not null
 );
 
 create table Administrator (
