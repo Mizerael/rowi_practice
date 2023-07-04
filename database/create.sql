@@ -24,17 +24,12 @@ create table User (
 create table Solution (
     Id              int         primary key     auto_increment,
     Author_id       int         not null,
-    Reference       text        not null
+    Reference       text        not null,
+    ProblemId       int         not null
 );
 
-create table SolutionToProblem (
-    SolutionId      int      not null,
-    ProblemId       int      not null,
-    constraint PK_SolutionToProblem primary key(SolutionId, ProblemId)
-);
-
-alter table SolutionToProblem add constraint FK_SolutionId
+alter table User add constraint FK_SolutionId
 foreign key (SolutionId) REFERENCES Solution(Id);
 
-alter table SolutionToProblem add constraint FK_SolutionToProblemProblemId
+alter table Solution add constraint FK_ProblemId
 foreign key (ProblemId) references ExistingProblem(Id); 
