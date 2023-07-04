@@ -79,6 +79,9 @@ namespace rowi_practice.Migrations
                     b.Property<long>("Author_Id")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("Problem_id")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Reference")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -86,19 +89,6 @@ namespace rowi_practice.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Solution");
-                });
-
-            modelBuilder.Entity("rowi_practice.Models.SolutionToProblem", b =>
-                {
-                    b.Property<long>("SolutionId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProblemId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("SolutionId", "ProblemId");
-
-                    b.ToTable("SolutionToProblem");
                 });
 
             modelBuilder.Entity("rowi_practice.Models.User", b =>

@@ -56,24 +56,12 @@ namespace rowi_practice.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Author_Id = table.Column<long>(type: "bigint", nullable: false),
-                    Reference = table.Column<string>(type: "longtext", nullable: false)
+                    Reference = table.Column<string>(type: "longtext", nullable: false),
+                    Problem_id = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Solution", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "SolutionToProblem",
-                columns: table => new
-                {
-                    SolutionId = table.Column<long>(type: "bigint", nullable: false),
-                    ProblemId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SolutionToProblem", x => new { x.SolutionId, x.ProblemId });
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -105,9 +93,6 @@ namespace rowi_practice.Migrations
 
             migrationBuilder.DropTable(
                 name: "Solution");
-
-            migrationBuilder.DropTable(
-                name: "SolutionToProblem");
 
             migrationBuilder.DropTable(
                 name: "User");
