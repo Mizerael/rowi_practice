@@ -18,4 +18,9 @@ public class DataBaseContext : DbContext
     {    
         optionsBuilder.UseMySQL("server=localhost;database=rowi_practice;user=rowi;password={159RoWi357}");
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<SolutionToProblem>().HasKey(u => new { u.SolutionId, u.ProblemId});
+    }
 }
