@@ -7,12 +7,12 @@ create table ExistingProblem (
     EndPointDate    timestamp   not null
 );
 
-create table Administrator (
-    Id              int         primary key     auto_increment,
-    LogCode         text        not null,
-    PassCode        text        not null,
-    AccessLevel     int         not null
-);
+-- create table Administrator (
+--     Id              int         primary key     auto_increment,
+--     LogCode         text        not null,
+--     PassCode        text        not null,
+--     AccessLevel     int         not null
+-- );
 
 create table User (
     Id              int         primary key     auto_increment,

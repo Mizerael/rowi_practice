@@ -16,22 +16,6 @@ namespace rowi_practice.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Administartor",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    LogCode = table.Column<string>(type: "longtext", nullable: false),
-                    PassCode = table.Column<string>(type: "longtext", nullable: false),
-                    AccessLevel = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Administartor", x => x.Id);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "ExistingProblem",
                 columns: table => new
                 {
@@ -53,11 +37,11 @@ namespace rowi_practice.Migrations
                 name: "Solution",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Author_Id = table.Column<long>(type: "bigint", nullable: false),
+                    Author_Id = table.Column<int>(type: "int", nullable: false),
                     Reference = table.Column<string>(type: "longtext", nullable: false),
-                    Problem_id = table.Column<long>(type: "bigint", nullable: false)
+                    Problem_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -73,7 +57,8 @@ namespace rowi_practice.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     LogCode = table.Column<string>(type: "longtext", nullable: false),
                     PassCode = table.Column<string>(type: "longtext", nullable: false),
-                    Email = table.Column<string>(type: "longtext", nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,9 +70,6 @@ namespace rowi_practice.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Administartor");
-
             migrationBuilder.DropTable(
                 name: "ExistingProblem");
 

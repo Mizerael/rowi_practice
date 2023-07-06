@@ -11,7 +11,7 @@ using rowi_practice.Context;
 namespace rowi_practice.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20230704151137_InitialCreate")]
+    [Migration("20230706085114_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -21,28 +21,6 @@ namespace rowi_practice.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("rowi_practice.Models.Administartor", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("AccessLevel")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LogCode")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PassCode")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Administartor");
-                });
 
             modelBuilder.Entity("rowi_practice.Models.ExistingProblem", b =>
                 {
@@ -75,15 +53,15 @@ namespace rowi_practice.Migrations
 
             modelBuilder.Entity("rowi_practice.Models.Solution", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    b.Property<long>("Author_Id")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Author_Id")
+                        .HasColumnType("int");
 
-                    b.Property<long>("Problem_id")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Problem_id")
+                        .HasColumnType("int");
 
                     b.Property<string>("Reference")
                         .IsRequired()
@@ -111,6 +89,9 @@ namespace rowi_practice.Migrations
                     b.Property<string>("PassCode")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
