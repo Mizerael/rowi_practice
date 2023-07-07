@@ -2,9 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 
@@ -19,14 +17,10 @@ namespace rowi_practice.Controllers;
 public class DataBaseController : ControllerBase
 {
     private readonly DataBaseContext _context;
-
     public static readonly List<string> ApiRoles = new List<string>(){"administrator", "user"};
 
     public
-    DataBaseController(DataBaseContext context)
-    {
-        _context = context;
-    }
+    DataBaseController(DataBaseContext context) => _context = context;
 
     private
     bool ExistingProblemExists(int id) => (_context.ExistingProblem?
@@ -112,53 +106,6 @@ public class DataBaseController : ControllerBase
 
         return CreatedAtAction(nameof(GetSolution), new {tId = id,  sId = solution.Id}
                                                   , solution);
-    }
-
-    [HttpPost("/login")]
-    public async
-    Task<ActionResult<ApiAuth>> login(CleientAuth request)
-    {
-        User? user = _context.User.FirstOrDefault(u => u.LogCode == request.login &&
-                                                       u.PassCode == request.pass);
-        if (user is null)
-            return Unauthorized();
-        
-        var claims = new List<Claim>
-        {
-            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
-            new Claim(ClaimsIdentity.DefaultRoleClaimType, ApiRoles[user.Role])
-        };
-        var jwt = new JwtSecurityToken(
-            issuer: AuthOptions.ISSUER,
-            audience: AuthOptions.AUDIENCE,
-            claims: claims,
-            expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(15)),
-            signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey()
-                                                       , SecurityAlgorithms.HmacSha256)
-        );
-        var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-        var response = new ApiAuth(){token = encodedJwt, user_id = user.Id};
-        return Ok(response);
-    }
-    
-    [HttpPost("/register")]
-    public async
-    Task<ActionResult<ApiAuth>> register(Registration request)
-    {
-        User? user = _context.User.FirstOrDefault(u => u.LogCode == request.login);
-        if (user is not null)
-            return BadRequest();
-
-        if(_context.User is null)
-            return Problem("Entity set 'DataBaseContext.User' is null.");
-
-        user = new User(){LogCode = request.login, Email = request.email
-                                                 , PassCode = request.pass, Role = (int)Role.user};
-        _context.User.Add(user);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(login)
-                               , new {request = new CleientAuth(){login = request.login
-                                                                  , pass = request.pass}});
     }
 }
 
