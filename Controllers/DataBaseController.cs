@@ -1,8 +1,14 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
+
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 using rowi_practice.Context;
 using rowi_practice.Models;
+
 
 namespace rowi_practice.Controllers;
 
@@ -11,30 +17,31 @@ namespace rowi_practice.Controllers;
 public class DataBaseController : ControllerBase
 {
     private readonly DataBaseContext _context;
+    public static readonly List<string> ApiRoles = new List<string>(){"administrator", "user"};
 
     public
     DataBaseController(DataBaseContext context) => _context = context;
 
     private
-    bool ExistingProblemExists(long id) => (_context.ExistingProblem?
-                                                    .Any(e => e.Id == id)).GetValueOrDefault();
+    bool ExistingProblemExists(int id) => (_context.ExistingProblem?
+                                                   .Any(e => e.Id == id)).GetValueOrDefault();
     
-    bool SolutionExists(long id) => (_context.Solution?
-                                             .Any(e => e.Id == id)).GetValueOrDefault();
-
-    [HttpGet("task")]
+    bool SolutionExists(int id) => (_context.Solution?
+                                            .Any(e => e.Id == id)).GetValueOrDefault();
+    [Authorize]
+    [HttpGet("tasks")]
     public async
     Task<ActionResult<IEnumerable<ExistingProblem>>> GetExistingProblem()
     {
         if (_context.ExistingProblem is null)
             return NotFound();
-        
+
         return await _context.ExistingProblem.ToListAsync();
     }
-
-    [HttpGet("task/{id}")]
+    [Authorize]
+    [HttpGet("tasks/{id}")]
     public async
-    Task<ActionResult<ExistingProblem>> GetExistingProblem(long id)
+    Task<ActionResult<ExistingProblem>> GetExistingProblem(int id)
     {
         if (_context.ExistingProblem is null)
             return NotFound();
@@ -45,75 +52,31 @@ public class DataBaseController : ControllerBase
 
         return existingProblem;
     }
-
-    [HttpGet("solution")]
+    [Authorize(Roles= "administrator")]
+    [HttpGet("tasks/{id}/solutions")]
     public async
-    Task<ActionResult<IEnumerable<Solution>>> GetSolution()
+    Task<ActionResult<IEnumerable<Solution>>> GetSolution(int id)
     {
         if(_context.Solution is null)
             return NotFound();
 
-        return await _context.Solution.ToListAsync();
+        return await _context.Solution.Where(s => s.Problem_id == id).ToListAsync();
     }
-
-    [HttpGet("solution/{id}")]
+    [Authorize(Roles= "administrator")]
+    [HttpGet("tasks/{tId}/solutions/{sId}")]
     public async
-    Task<ActionResult<Solution>> GetSolution(long id)
+    Task<ActionResult<Solution>> GetSolution(int tId, int sId)
     {
         if(_context.Solution is null)
             return NotFound();
 
-        var solution = await _context.Solution.FindAsync(id);
-        if (solution is null)
+        var solution = await _context.Solution.FindAsync(sId);
+        if (solution is null || solution.Problem_id != tId)
             return NotFound();
 
         return solution;
     }
-
-    [HttpPut("task/{id}")]
-    public async
-    Task<IActionResult> PutExistingProblem(long id, ExistingProblem existingProblem)
-    {
-        if(id != existingProblem.Id)
-            return BadRequest();
-
-        _context.Entry(existingProblem).State = EntityState.Modified;
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if(!SolutionExists(id))
-                return NotFound();
-            throw;
-        }
-
-        return Ok();
-    }
-
-    [HttpPut("solution/{id}")]
-    public async
-    Task<IActionResult> PutSolutionProblem(long id, Solution solution)
-    {
-        if(id != solution.Id)
-            return BadRequest();
-
-        _context.Entry(solution).State = EntityState.Modified;
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if(!SolutionExists(id))
-                return NotFound();
-            throw;
-        }
-
-        return Ok();
-    }
-
+    [Authorize(Roles= "admininstrator")]
     [HttpPost("task")]
     public async
     Task<ActionResult<ExistingProblem>> PostExistingProblem(ExistingProblem existingProblem)
@@ -127,52 +90,22 @@ public class DataBaseController : ControllerBase
         return CreatedAtAction(nameof(GetExistingProblem), new {id = existingProblem.Id}
                                                          , existingProblem);
     }
-
-    [HttpPost("solution")]
+    [Authorize(Roles= "user")]
+    [HttpPost("tasks/{id}/solution")]
     public async
-    Task<ActionResult<Solution>> PostSolutionProblem(Solution solution)
+    Task<ActionResult<Solution>> PostSolutionProblem(int id, Solution solution)
     {
+        if(solution.Problem_id != id)
+            return BadRequest();
+
         if(_context.Solution is null)
             return Problem("Entity set 'DataBaseContext.Solution is null.");
 
         _context.Solution.Add(solution);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetSolution), new {id = solution.Id}
+        return CreatedAtAction(nameof(GetSolution), new {tId = id,  sId = solution.Id}
                                                   , solution);
     }
-
-    [HttpDelete("task/{id}")]
-    public async
-    Task<IActionResult> DeleteExistingProblem(long id)
-    {
-        if(_context.ExistingProblem is null)
-            return NotFound();
-
-        var existingProblem = await _context.ExistingProblem.FindAsync(id);
-        if(existingProblem is null)
-            return NotFound();
-
-        _context.ExistingProblem.Remove(existingProblem);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    [HttpDelete("solution/{id}")]
-    public async
-    Task<IActionResult> DeleteSolution(long id)
-    {
-        if(_context.ExistingProblem is null)
-            return NotFound();
-        
-        var solution = await _context.Solution.FindAsync(id);
-        if(solution is null)
-            return NotFound();
-
-        _context.Solution.Remove(solution);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
 }
+
