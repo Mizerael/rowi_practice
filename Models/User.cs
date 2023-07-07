@@ -13,5 +13,4 @@ public class User
     public string PassCode { get; set; }
     public string Email { get; set; }
     public int Role { get; set; }
-
 }
