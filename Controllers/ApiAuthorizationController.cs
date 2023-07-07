@@ -52,7 +52,8 @@ public class ApiAuthorizationsController : ControllerBase
     public async
     Task<ActionResult<ApiAuth>> register(Registration request)
     {
-        User? user = _context.User.FirstOrDefault(u => u.LogCode == request.login);
+        User? user = _context.User.FirstOrDefault(u => u.LogCode == request.login ||
+                                                       u.Email == request.email);
         if (user is not null)
             return BadRequest();
 
@@ -63,9 +64,6 @@ public class ApiAuthorizationsController : ControllerBase
                                                  , PassCode = request.pass, Role = (int)Role.user};
         _context.User.Add(user);
         await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(login)
-                               , new {request = new CleientAuth(){login = request.login
-                                                                  , pass = request.pass}}
-                               , request);
+        return Ok(request);
     }
 }
