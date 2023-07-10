@@ -72,7 +72,7 @@ public class DataBaseController : ControllerBase
 
         return solution;
     }
-    [Authorize(Roles= "admininstrator")]
+    [Authorize(Roles= "administrator")]
     [HttpPost("task")]
     public async
     Task<ActionResult<ExistingProblem>> PostExistingProblem(ExistingProblem existingProblem)
