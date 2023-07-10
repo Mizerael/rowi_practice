@@ -21,10 +21,6 @@ public class DataBaseController : ControllerBase
 
     public
     DataBaseController(DataBaseContext context) => _context = context;
-
-    private
-    bool ExistingProblemExists(int id) => (_context.ExistingProblem?
-                                                   .Any(e => e.Id == id)).GetValueOrDefault();
     
     bool SolutionExists(int id) => (_context.Solution?
                                             .Any(e => e.Id == id)).GetValueOrDefault();
@@ -107,5 +103,31 @@ public class DataBaseController : ControllerBase
         return CreatedAtAction(nameof(GetSolution), new {tId = id,  sId = solution.Id}
                                                   , solution);
     }
+
+    [Authorize(Roles= "administrator")]
+    [HttpPut("task{tId}/solution/{sId}")]
+    public async
+    Task<IActionResult> ApproveSolution(int tId, int sId)
+    {
+        var solution = await _context.Solution.FindAsync(sId);
+        if (solution is null || solution.Problem_id != tId)
+            return NotFound();
+        solution.Approve = !solution.Approve;
+        _context.Entry(solution).State = EntityState.Modified;
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if(!SolutionExists(sId))
+                return NotFound();
+            throw;
+        }
+
+        return Ok();
+    }
+
+
 }
 

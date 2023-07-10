@@ -21,6 +21,7 @@ namespace rowi_practice.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Price = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "longtext", nullable: false),
                     Contains = table.Column<string>(type: "longtext", nullable: false),
                     Tests = table.Column<string>(type: "longtext", nullable: false),
@@ -41,7 +42,8 @@ namespace rowi_practice.Migrations
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Author_Id = table.Column<int>(type: "int", nullable: false),
                     Reference = table.Column<string>(type: "longtext", nullable: false),
-                    Problem_id = table.Column<int>(type: "int", nullable: false)
+                    Problem_id = table.Column<int>(type: "int", nullable: false),
+                    Approve = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
