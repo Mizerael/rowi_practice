@@ -105,7 +105,7 @@ public class DataBaseController : ControllerBase
     }
 
     [Authorize(Roles= "administrator")]
-    [HttpPut("task{tId}/solution/{sId}")]
+    [HttpPut("task/{tId}solution/{sId}")]
     public async
     Task<IActionResult> ApproveSolution(int tId, int sId)
     {
