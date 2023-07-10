@@ -1,18 +1,12 @@
 create table ExistingProblem (
     Id              int         primary key     auto_increment,
+    Price           int         not null,
     Name            text        not null,
     Contains        text        not null,
     Tests           text        not null,
     DataCreated     timestamp   not null,
     EndPointDate    timestamp   not null
 );
-
--- create table Administrator (
---     Id              int         primary key     auto_increment,
---     LogCode         text        not null,
---     PassCode        text        not null,
---     AccessLevel     int         not null
--- );
 
 create table User (
     Id              int         primary key     auto_increment,
@@ -25,7 +19,8 @@ create table Solution (
     Id              int         primary key     auto_increment,
     Author_id       int         not null,
     Reference       text        not null,
-    ProblemId       int         not null
+    ProblemId       int         not null,
+    Approve         tinyint(1)  not null
 );
 
 alter table User add constraint FK_SolutionId

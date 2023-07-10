@@ -11,7 +11,7 @@ using rowi_practice.Context;
 namespace rowi_practice.Migrations
 {
     [DbContext(typeof(DataBaseContext))]
-    [Migration("20230706085114_InitialCreate")]
+    [Migration("20230710084130_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -42,6 +42,9 @@ namespace rowi_practice.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
                     b.Property<string>("Tests")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -56,6 +59,9 @@ namespace rowi_practice.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<bool>("Approve")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("Author_Id")
                         .HasColumnType("int");
