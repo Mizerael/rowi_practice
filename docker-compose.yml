@@ -1,0 +1,25 @@
+version: "3.0"
+
+services:
+  web_api:
+    depends_on:
+      - mysql_server
+    image: rowi
+    container_name: RowiApi
+    build:
+      context: .
+    ports:
+      - "5000:80"
+  mysql_server:
+    image: mysql:debian
+    container_name: mysql_server
+    environment:
+      MYSQL_DATABASE: rowi_practice
+      MYSQL_USER: rowi
+      MYSQL_PASSWORD: "{159RoWi357}"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./database:/database-init
+    restart: always
+volumes:
+  mysql-data:

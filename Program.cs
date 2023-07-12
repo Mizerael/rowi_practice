@@ -48,7 +48,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Map("/noauth", ()=>"It's works");
-app.Map("/auth", [Authorize]()=>"And this works too");
-
 app.Run();

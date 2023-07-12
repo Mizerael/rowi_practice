@@ -68,5 +68,5 @@ public class ApiAuthorizationsController : ControllerBase
     }
     [HttpGet("/")]
     public
-    string docker()=> "Docker is up!";
+    string api()=> "Api is up!";
 }
