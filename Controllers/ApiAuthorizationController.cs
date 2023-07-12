@@ -66,4 +66,7 @@ public class ApiAuthorizationsController : ControllerBase
         await _context.SaveChangesAsync();
         return Ok(request);
     }
+    [HttpGet("/")]
+    public
+    string docker()=> "Docker is up!";
 }
