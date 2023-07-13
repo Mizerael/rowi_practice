@@ -8,6 +8,16 @@ using rowi_practice.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("http://practice.mizerael.com"
+                               , "https://practice.mizerael.com");
+        });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddAuthorization();
@@ -42,6 +52,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
