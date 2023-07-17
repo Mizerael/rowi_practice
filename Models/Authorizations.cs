@@ -20,6 +20,7 @@ public static class AuthOptions
 public class ApiAuth
 {
     public string result { get; set; }
+    public int role {get; set; } 
     public long user_id { get; set; }
 }
 public class CleientAuth

@@ -44,7 +44,7 @@ public class ApiAuthorizationsController : ControllerBase
                                                        , SecurityAlgorithms.HmacSha256)
         );
         var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-        var response = new ApiAuth(){result= encodedJwt, user_id= user.Id};
+        var response = new ApiAuth(){result= encodedJwt, role= user.Role ,user_id= user.Id};
         return Ok(response);
     }
     
