@@ -8,12 +8,14 @@ services:
     container_name: RowiApi
     build:
       context: .
+      dockerfile: Dockerfile
     ports:
-      - "5000:80"
+      - "8080:80"
   mysql_server:
     image: mysql:debian
     container_name: mysql_server
     environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
       MYSQL_DATABASE: rowi_practice
       MYSQL_USER: rowi
       MYSQL_PASSWORD: "{159RoWi357}"

@@ -23,11 +23,9 @@ create table if not exists Solution (
     Approve         tinyint(1)  not null
 );
 
-alter table User add constraint FK_SolutionId
-foreign key (SolutionId) REFERENCES Solution(Id);
-
 alter table Solution add constraint FK_ProblemId
 foreign key (ProblemId) references ExistingProblem(Id); 
+alter table Solution add constraint FK_AuthorId
+foreign key (Author_id) references User(Id); 
 
 insert into User (LogCode, PassCode, email) values ("aboba", "aboba", "aboba");
-insert into ExistingProblem (Price, Name, Contains, Tests) values (1, "aboba", "aboba", "aboba");

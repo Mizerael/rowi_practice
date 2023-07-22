@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authorization;
 
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
@@ -44,7 +43,7 @@ public class ApiAuthorizationsController : ControllerBase
                                                        , SecurityAlgorithms.HmacSha256)
         );
         var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-        var response = new ApiAuth(){result= encodedJwt, role= user.Role ,user_id= user.Id};
+        var response = new ApiAuth(){result = encodedJwt, role = user.Role, user_id = user.Id};
         return Ok(response);
     }
     

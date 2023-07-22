@@ -46,13 +46,21 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(b => b.WithOrigins("http://localhost:5173", "http://localhost:4173")
-                             .AllowAnyHeader()
-                            .AllowAnyMethod()
-                            .AllowCredentials());
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials());
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<DataBaseContext>();
+    context.Database.Migrate();
+}
 
 app.Run();

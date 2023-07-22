@@ -3,9 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authorization;
 
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
-
 using rowi_practice.Context;
 using rowi_practice.Models;
 
