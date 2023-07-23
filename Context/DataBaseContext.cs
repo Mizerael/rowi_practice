@@ -17,7 +17,11 @@ public class DataBaseContext : DbContext
     protected override
     void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {    
-        optionsBuilder.UseMySQL("server=mysql_server;database=rowi_practice;user=rowi;password={159RoWi357}");
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+            .AddJsonFile("appsettings.json")
+            .Build();
+        optionsBuilder.UseMySQL(configuration.GetConnectionString("Default"));
     }
     protected override
     void OnModelCreating(ModelBuilder builder)

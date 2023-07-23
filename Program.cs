@@ -60,7 +60,11 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<DataBaseContext>();
-    context.Database.Migrate();
+    Console.Write("Waiting for the database configuration to complete");
+    while(!context.Database.CanConnect())
+        System.Threading.Thread.Sleep(1000);
+    if (context.Database.GetPendingMigrations().Any())
+        context.Database.Migrate();
 }
 
 app.Run();
