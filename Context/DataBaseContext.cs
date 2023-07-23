@@ -21,7 +21,7 @@ public class DataBaseContext : DbContext
             .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
             .AddJsonFile("appsettings.json")
             .Build();
-        optionsBuilder.UseMySQL(configuration.GetConnectionString("Default"));
+        optionsBuilder.UseMySQL(configuration.GetConnectionString("Docker"));
     }
     protected override
     void OnModelCreating(ModelBuilder builder)
