@@ -1,6 +1,6 @@
 using rowi_practice.Application;
 
-var builder = ApiBuilder.CreateBuilder(args, "Docker");
+var builder = ApiBuilder.CreateBuilder(args, "Default");
 ApiBuilder.AddAuthorization(builder);
 
 var app = ApiApp.CreateApp(builder);

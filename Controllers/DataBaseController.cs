@@ -31,6 +31,7 @@ public class DataBaseController : ControllerBase
 
         return await _context.ExistingProblem.ToListAsync();
     }
+
     [Authorize]
     [HttpGet("tasks/{id}")]
     public async
@@ -45,6 +46,17 @@ public class DataBaseController : ControllerBase
 
         return existingProblem;
     }
+    [Authorize(Roles = "user")]
+    [HttpGet("user/{id}/solutions")]
+    public async
+    Task<ActionResult<IEnumerable<Solution>>> GetUserSolution(int id)
+    {
+        if(_context.Solution is null)
+            return NotFound();
+
+        return await _context.Solution.Where(s => s.Author_Id == id).ToListAsync();
+    }
+
     [Authorize(Roles= "administrator")]
     [HttpGet("tasks/{id}/solutions")]
     public async
@@ -55,6 +67,7 @@ public class DataBaseController : ControllerBase
 
         return await _context.Solution.Where(s => s.Problem_id == id).ToListAsync();
     }
+
     [Authorize(Roles= "administrator")]
     [HttpGet("tasks/{tId}/solutions/{sId}")]
     public async
@@ -69,6 +82,7 @@ public class DataBaseController : ControllerBase
 
         return solution;
     }
+
     [Authorize(Roles= "administrator")]
     [HttpPost("task")]
     public async
@@ -83,6 +97,7 @@ public class DataBaseController : ControllerBase
         return CreatedAtAction(nameof(GetExistingProblem), new {id = existingProblem.Id}
                                                          , existingProblem);
     }
+
     [Authorize(Roles= "user")]
     [HttpPost("tasks/{id}/solution")]
     public async
